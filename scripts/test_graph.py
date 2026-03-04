@@ -12,6 +12,10 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Import Internal Packages
 from agent.graph import compliance_graph
+from config.logging import setup_logging
+
+# Setup logging
+setup_logging()
 
 
 def main():
