@@ -19,7 +19,8 @@ setup_logging()
 
 
 def main():
-    # Minimal initial state - only required fields
+    # Read non-compliant fixture contract
+    contract_text = open("tests/fixtures/contracts/contract_non_compliant.md").read()
 
     initial_state = {
         "contract_id": "test-001",
@@ -46,6 +47,11 @@ def main():
     print(f"   Total clauses: {final_state["report"]["total_clauses"]}")
     print(f"   Findings     : {final_state["report"]['non_compliant_clauses']}")
     print(f"   Status       : {final_state["report"]["status"]}")
+
+    # Display parsed clauses
+    print("\n Parsed clauses")
+    for clause in final_state.get("clauses", []):
+        print(f">>> [{clause["clause_id"]}] {clause["title"]}")
 
 
 if __name__ == "__main__":
