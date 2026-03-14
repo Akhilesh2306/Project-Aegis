@@ -30,3 +30,6 @@ htmlcov/
 
 # OS
 .DS_Store
+
+# Vector store (local dev only)
+.chromadb/

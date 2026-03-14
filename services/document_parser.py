@@ -49,7 +49,7 @@ class DocumentParser:
         clauses = []
 
         # Split on ## headings (level 2 markdown headers)
-        sections = re.split(r"\n(?=##)", text)
+        sections = re.split(r"\n(?=#{2,}\s)", text)
 
         for section in sections:
             section = section.strip()
@@ -61,8 +61,8 @@ class DocumentParser:
             heading = lines[0].strip()
             content = "\n".join(lines[1:]).strip()
 
-            # A valid section heading must start with ## specifically
-            if not heading.startswith("## "):
+            # Must start with ## or deeper — skip single # titles
+            if not re.match(r"^#{2,}\s", heading):
                 continue
 
             # Skip empty sections
@@ -71,7 +71,7 @@ class DocumentParser:
 
             # Parse section number and title from heading
             # Handles: "## 1. Services", "## 2. Term and Termination"
-            heading_clean = re.sub(r"^#\s*", "", heading)
+            heading_clean = re.sub(r"^#{1,}\s+", "", heading).strip()
             number, title = self._extract_number_and_title(heading_clean)
 
             clause: Clause = {

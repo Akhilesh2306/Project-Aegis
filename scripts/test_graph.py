@@ -3,7 +3,7 @@ Quick smoke test — runs the graph with a minimal state
 and prints the final report. No LLM calls, no DB needed.
 """
 
-# Import External Libraries
+# Import external libraries
 import os
 import sys
 
