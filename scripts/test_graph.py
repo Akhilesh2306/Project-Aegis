@@ -49,28 +49,43 @@ def main():
         print(f"     Retry count: {final_state.get('retry_count', 0)}")
         return
 
-    print("\n✅ Graph completed successfully")
-    print(f"   Contract ID  : {final_state["report"]["contract_id"]}")
-    print(f"   Filename     : {final_state["report"]["filename"]}")
-    print(f"   Total clauses: {final_state["report"]["total_clauses"]}")
-    print(f"   Findings     : {final_state["report"]['non_compliant_clauses']}")
-    print(f"   Status       : {final_state["report"]["status"]}")
+    # print("\n✅ Graph completed successfully")
+    # print(f"   Contract ID  : {final_state["report"]["contract_id"]}")
+    # print(f"   Filename     : {final_state["report"]["filename"]}")
+    # print(f"   Total clauses: {final_state["report"]["total_clauses"]}")
+    # print(f"   Findings     : {final_state["report"]['non_compliant_clauses']}")
+    # print(f"   Status       : {final_state["report"]["status"]}")
 
     # Display parsed clauses
     print("\n Parsed clauses")
     for clause in final_state.get("clauses", []):
         print(f">>> [{clause["clause_id"]}] {clause["title"]}")
 
-    # Show findings
+    # Show findings with drafted replacements
     findings = final_state.get("findings", [])
     if findings:
         print(f"\n>>> Compliance Findings ({len(findings)}):")
         for f in findings:
-            print(f"    [{f["severity"]}] {f["clause_id"]} -> {f["policy_id"]}")
-            print(f"        {f["reason"]}")
+            print(f"\n  [{f['severity']}] {f['clause_id']} → {f['policy_id']}")
+            print(f"    Reason  : {f['reason']}")
+            if f.get("suggested_text"):
+                print(f"    Fix     : {f['suggested_text'][:120]}...")
 
     else:
         print("\n No compliance violations found.")
+
+    # Show summary
+    summary = report.get("summary", {})
+    print(f"\n Summary:")
+    print(f">>> Overall status : {summary.get('overall_status')}")
+    print(f">>> Total clauses  : {summary.get('total_clauses')}")
+    print(f">>> Non-compliant  : {summary.get('non_compliant_clauses')}")
+    print(
+        f">>> HIGH findings  : {summary.get('severity_breakdown', {}).get('HIGH', 0)}"
+    )
+    print(
+        f">>> MEDIUM findings: {summary.get('severity_breakdown', {}).get('MEDIUM', 0)}"
+    )
 
 
 if __name__ == "__main__":

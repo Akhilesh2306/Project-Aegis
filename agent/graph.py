@@ -10,14 +10,14 @@ logger = logging.getLogger(__name__)
 
 # === Node functions ===
 # Importing here so graph.py stays clean - it only handles wiring
-from agent.nodes.ingest import ingest_node
 from agent.nodes.parse import parse_node
-from agent.nodes.policy_retrieval import policy_retrieval_node
+from agent.nodes.ingest import ingest_node
 from agent.nodes.web_search import web_search_node
-from agent.nodes.compliance_check import compliance_check_node
-from agent.nodes.clause_drafting import clause_drafting_node
-from agent.nodes.report_generation import report_generation_node
 from agent.nodes.error_handler import error_handler_node
+from agent.nodes.clause_drafting import clause_drafting_node
+from agent.nodes.policy_retrieval import policy_retrieval_node
+from agent.nodes.compliance_check import compliance_check_node
+from agent.nodes.report_generation import report_generation_node
 
 
 # === Graph Definition ===
