@@ -41,6 +41,14 @@ def main():
     # invoke() runs the graph synchronously — perfect for testing
     final_state = compliance_graph.invoke(initial_state)  # type: ignore
 
+    # Guard against failed runs where report didn't generate
+    report = final_state.get("report")
+    if not report:
+        print("\n❌ Graph failed to generate report")
+        print(f"     Last error: {final_state.get("error", "Unknown")}")
+        print(f"     Retry count: {final_state.get('retry_count', 0)}")
+        return
+
     print("\n✅ Graph completed successfully")
     print(f"   Contract ID  : {final_state["report"]["contract_id"]}")
     print(f"   Filename     : {final_state["report"]["filename"]}")
@@ -52,6 +60,17 @@ def main():
     print("\n Parsed clauses")
     for clause in final_state.get("clauses", []):
         print(f">>> [{clause["clause_id"]}] {clause["title"]}")
+
+    # Show findings
+    findings = final_state.get("findings", [])
+    if findings:
+        print(f"\n>>> Compliance Findings ({len(findings)}):")
+        for f in findings:
+            print(f"    [{f["severity"]}] {f["clause_id"]} -> {f["policy_id"]}")
+            print(f"        {f["reason"]}")
+
+    else:
+        print("\n No compliance violations found.")
 
 
 if __name__ == "__main__":

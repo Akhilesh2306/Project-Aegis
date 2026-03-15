@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 def error_handler_node(state: ComplianceState) -> dict:
     """
-    Handles errors from any node - logs and increments retry count
+    Handles errors from any node - logs, increments retry count, clears accumulated state so retry starts fresh.
     """
 
     error = state.get("error", "Unknown error")
@@ -25,4 +25,8 @@ def error_handler_node(state: ComplianceState) -> dict:
     return {
         "retry_count": retry_count + 1,
         "error": None,  # clear error so retry can proceed
+        "clauses": [],  # clear so parse_node starts fresh
+        "policy_chunks": [],  # clear so retrieval starts fresh
+        "web_results": [],  # clear so web_search starts fresh
+        "findings": [],  # clear any partial findings
     }

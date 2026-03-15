@@ -25,7 +25,7 @@ class DocumentParser:
 
         file_suffix = Path(filename).suffix.lower()
 
-        logging.info(f"Parsing document: {filename} (format: {file_suffix})")
+        logger.info(f"Parsing document: {filename} (format: {file_suffix})")
 
         if file_suffix in (".md", ".txt", ""):
             clauses = self._parse_markdown(text)
