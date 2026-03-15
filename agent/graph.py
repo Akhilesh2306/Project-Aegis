@@ -35,7 +35,7 @@ def build_graph() -> StateGraph:
     graph.add_node("policy_retrieval", policy_retrieval_node)
     graph.add_node("web_search", web_search_node)
     graph.add_node("compliance_check", compliance_check_node)
-    graph.add_node("clause_drifting", clause_drafting_node)
+    graph.add_node("clause_drafting", clause_drafting_node)
     graph.add_node("report_generation", report_generation_node)
     graph.add_node("error_handler", error_handler_node)
 
@@ -51,12 +51,12 @@ def build_graph() -> StateGraph:
         "compliance_check",
         should_draft_clauses,
         {
-            "clause_drifting": "clause_drifting",
+            "clause_drafting": "clause_drafting",
             "report_generation": "report_generation",
             "error_handler": "error_handler",
         },
     )
-    graph.add_edge("clause_drifting", "report_generation")
+    graph.add_edge("clause_drafting", "report_generation")
     graph.add_edge("report_generation", END)
 
     # 4. Error handler conditional edge
@@ -86,7 +86,7 @@ def should_draft_clauses(state: ComplianceState) -> str:
         return "error_handler"
 
     if state.get("findings"):
-        return "clause_drifting"
+        return "clause_drafting"
 
     return "report_generation"
 
